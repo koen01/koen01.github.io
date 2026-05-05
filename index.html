@@ -59,6 +59,7 @@
     margin: 0 auto;
     padding: 40px 32px 120px;
   }
+  @media (max-width: 540px) { .wrap { padding: 24px 20px 72px; } }
 
   /* ---------- Top bar ---------- */
   .topbar {
@@ -67,6 +68,7 @@
     justify-content: space-between;
     padding-bottom: 56px;
   }
+  @media (max-width: 540px) { .topbar { padding-bottom: 36px; } }
   .mark {
     display: flex;
     align-items: center;
@@ -100,6 +102,7 @@
     transition: color 160ms;
   }
   .nav a:hover { color: var(--ink); }
+  @media (max-width: 540px) { .nav a { display: none; } }
   .theme-toggle {
     display: inline-flex;
     align-items: center;
@@ -127,6 +130,7 @@
   .hero {
     padding: 8px 0 72px;
   }
+  @media (max-width: 540px) { .hero { padding-bottom: 48px; } }
   .eyebrow {
     display: inline-flex;
     align-items: center;
@@ -153,7 +157,7 @@
   h1.display {
     font-family: 'Fraunces', Georgia, serif;
     font-weight: 400;
-    font-size: clamp(48px, 8vw, 84px);
+    font-size: clamp(34px, 9vw, 84px);
     line-height: 0.98;
     letter-spacing: -0.025em;
     margin: 0 0 28px;
@@ -172,6 +176,7 @@
     margin: 0 0 36px;
     text-wrap: pretty;
   }
+  @media (max-width: 540px) { .lede { font-size: 16px; margin-bottom: 24px; } }
   .meta {
     display: flex;
     flex-wrap: wrap;
@@ -185,6 +190,7 @@
 
   /* ---------- Section ---------- */
   section { padding: 56px 0; border-top: 1px solid var(--rule); }
+  @media (max-width: 540px) { section { padding: 40px 0; } }
   .section-head {
     display: flex;
     align-items: baseline;
@@ -357,8 +363,13 @@
 
   @media (max-width: 640px) {
     .project { grid-template-columns: 1fr; gap: 8px; }
+    .project:hover { padding-left: 0; padding-right: 0; }
     .project-num { padding-top: 0; }
     .project-arrow { display: none; }
+  }
+  @media (max-width: 540px) {
+    .project-name { font-size: 20px; }
+    .project-desc { font-size: 14.5px; }
   }
 
   /* ---------- Now / contact ---------- */
@@ -371,6 +382,7 @@
     margin-top: 80px;
   }
   @media (max-width: 640px) { .footnote { grid-template-columns: 1fr; gap: 32px; } }
+  @media (max-width: 540px) { .footnote { margin-top: 48px; padding-top: 40px; } }
   .footnote h3 {
     font-family: 'JetBrains Mono', monospace;
     font-weight: 400;
@@ -425,6 +437,7 @@
     color: var(--ink-mute);
     letter-spacing: 0.04em;
   }
+  @media (max-width: 540px) { .colophon { margin-top: 48px; } }
 
   /* ---------- Subtle entrance ---------- */
   .reveal { opacity: 0; transform: translateY(8px); animation: reveal 800ms cubic-bezier(.2,.7,.3,1) forwards; }
