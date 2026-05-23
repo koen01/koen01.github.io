@@ -6,14 +6,27 @@
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { background: #000; width: 100vw; height: 100vh; overflow: hidden; }
+
+    /* Hide the Cast framework's built-in video player element */
+    cast-media-player {
+      display: none !important;
+      visibility: hidden !important;
+    }
+
+    /* MJPEG stream — fixed on top of everything */
     #stream {
+      position: fixed;
+      inset: 0;
       width: 100%;
       height: 100%;
       object-fit: contain;
+      z-index: 9999;
       display: block;
+      background: #000;
     }
+
     #splash {
-      position: absolute;
+      position: fixed;
       inset: 0;
       display: flex;
       flex-direction: column;
@@ -23,6 +36,7 @@
       color: #fff;
       font-family: 'Google Sans', sans-serif;
       gap: 12px;
+      z-index: 9998;
     }
     #splash.hidden { display: none; }
     #splash h1 { font-size: 2em; font-weight: 300; letter-spacing: 0.05em; }
@@ -33,26 +47,17 @@
   <img id="stream" alt="">
   <div id="splash">
     <h1>Moonraker Viewer</h1>
-    <p>Waiting for stream from the app…</p>
+    <p id="status">Waiting for stream from the app…</p>
   </div>
 
-  <!--
-    SETUP:
-    1. Host this file at a public HTTPS URL (GitHub Pages, Netlify, etc.).
-    2. Go to https://cast.google.com/publish, register the URL as a receiver,
-       and obtain a Cast Application ID.
-    3. In lib/services/cast_service.dart, replace kCastReceiverAppId with
-       your App ID.
-  -->
   <script src="//www.gstatic.com/cast/sdk/libs/caf_receiver/v3/cast_receiver_framework.js"></script>
   <script>
     const ctx = cast.framework.CastReceiverContext.getInstance();
     const pm = ctx.getPlayerManager();
     const streamEl = document.getElementById('stream');
     const splashEl = document.getElementById('splash');
+    const statusEl = document.getElementById('status');
 
-    // Intercept LOAD messages and display the MJPEG URL via <img> instead
-    // of the built-in video player (which can't handle multipart/x-mixed-replace).
     pm.setMessageInterceptor(
       cast.framework.messages.MessageType.LOAD,
       request => {
@@ -60,12 +65,15 @@
         if (url) {
           streamEl.onload = () => splashEl.classList.add('hidden');
           streamEl.onerror = () => {
-            splashEl.querySelector('p').textContent =
-              'Stream error — check that the phone and Chromecast are on the same Wi-Fi network.';
+            statusEl.textContent =
+              'Stream error — make sure phone and TV are on the same Wi-Fi.';
           };
           streamEl.src = url;
         }
-        return null; // Don't pass to the built-in player
+        // Return null to prevent the framework's video player from activating.
+        // The cast-media-player element is hidden via CSS so the black overlay
+        // it injects is suppressed.
+        return null;
       }
     );
 
